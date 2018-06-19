@@ -13,32 +13,26 @@ class Calculator extends React.Component {
       totalSavings: '',
       currentSlide: 0
     }
-
-    this.nextSlide = this.nextSlide.bind(this);
-    this.previousSlide = this.previousSlide.bind(this);
-    this.updateIncome = this.updateIncome.bind(this);
-    this.updateSpend = this.updateSpend.bind(this);
-    this.updateSavings = this.updateSavings.bind(this);
   }
 
-  updateIncome(event) {
+  updateIncome = (event) => {
     this.setState({monthlyIncome: event.target.value});
   }
 
-  updateSpend(event) {
+  updateSpend = (event) => {
     this.setState({monthlySpend: event.target.value});
   }
 
-  updateSavings(event) {
+  updateSavings = (event) => {
     this.setState({totalSavings: event.target.value});
   }
 
-  nextSlide(event) {
+  nextSlide = (event) => {
     event.preventDefault();
     this.setState({currentSlide: this.state.currentSlide + 1});
   }
 
-  previousSlide(event) {
+  previousSlide = (event) => {
     event.preventDefault();
     this.setState({currentSlide: this.state.currentSlide - 1});
   }
