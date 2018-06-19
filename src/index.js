@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import {calculateGraphData} from './independence_calculations.js';
+import {calculateGraphData} from './independenceCalculations.js';
 
 
 class Calculator extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      monthly_income: '',
-      monthly_spend: '',
-      total_savings: '',
-      current_slide: 0
+      monthlyIncome: '',
+      monthlySpend: '',
+      totalSavings: '',
+      currentSlide: 0
     }
 
     this.nextSlide = this.nextSlide.bind(this);
@@ -22,87 +22,76 @@ class Calculator extends React.Component {
   }
 
   updateIncome(event) {
-    const new_state = Object.assign({}, this.state);
-    new_state.monthly_income = event.target.value;
-    this.setState(new_state);
+    this.setState({monthlyIncome: event.target.value});
   }
 
   updateSpend(event) {
-    const new_state = Object.assign({}, this.state);
-    new_state.monthly_spend = event.target.value
-    this.setState(new_state);
+    this.setState({monthlySpend: event.target.value});
   }
 
   updateSavings(event) {
-    const new_state = Object.assign({}, this.state);
-    new_state.total_savings = event.target.value
-    this.setState(new_state);
+    this.setState({totalSavings: event.target.value});
   }
 
   nextSlide(event) {
     event.preventDefault();
-    const new_state = Object.assign({}, this.state);
-    new_state.current_slide++;
-    this.setState(new_state);
+    this.setState({currentSlide: this.state.currentSlide + 1});
   }
 
   previousSlide(event) {
     event.preventDefault();
-    const new_state = Object.assign({}, this.state);
-    new_state.current_slide--;
-    this.setState(new_state);
+    this.setState({currentSlide: this.state.currentSlide - 1});
   }
 
   render() {
-    if (this.state.current_slide === 0){
+    if (this.state.currentSlide === 0){
       return(
         <form onSubmit={this.nextSlide}>
           income
           <div className='income-input'>
-            <input type='text' placeholder='$3500' value={this.state.monthly_income} onChange={this.updateIncome}></input>
+            <input type='text' placeholder='$3500' value={this.state.monthlyIncome} onChange={this.updateIncome} />
             <br/>
-            <input type='submit' value='Next'></input>
+            <input type='submit' value='Next' />
           </div>
         </form>
       );
-    } else if (this.state.current_slide === 1) {
+    } else if (this.state.currentSlide === 1) {
       return (
         <form onSubmit={this.nextSlide}>
           expenses
           <div className='spend-input'>
-            <input type='text' placeholder='$2500' value={this.state.monthly_spend} onChange={this.updateSpend}></input>
+            <input type='text' placeholder='$2500' value={this.state.monthlySpend} onChange={this.updateSpend} />
             <br/>
-            <input type='button' value='Back' onClick={this.previousSlide}></input>
-            <input type='submit' value='Next'></input>
+            <input type='button' value='Back' onClick={this.previousSlide} />
+            <input type='submit' value='Next' />
           </div>
         </form>
       );
-    } else if (this.state.current_slide === 2) {
+    } else if (this.state.currentSlide === 2) {
       return (
         <form onSubmit={this.nextSlide}>
           savings
           <div className='savings-input'>
-            <input type='text' placeholder='$250000' value={this.state.total_savings} onChange={this.updateSavings}></input>
+            <input type='text' placeholder='$250000' value={this.state.totalSavings} onChange={this.updateSavings} />
             <br/>
-            <input type='button' value='Back' onClick={this.previousSlide}></input>
-            <input type='submit' value='Next'></input>
+            <input type='button' value='Back' onClick={this.previousSlide} />
+            <input type='submit' value='Next' />
           </div>
         </form>
       );
     } else {
-      const graph_data = calculateGraphData(this.state.monthly_spend, this.state.monthly_income, this.state.total_savings);
-      console.log(graph_data);
+      const graphData = calculateGraphData(this.state.monthlySpend, this.state.monthlyIncome, this.state.totalSavings);
 
       return (
         <div>
-          <div>income: {this.state.monthly_income}</div>
-          <div>spend: {this.state.monthly_spend}</div>
-          <div>savings: {this.state.total_savings}</div>
-          <input type='button' value='Back' onClick={this.previousSlide}></input>
+          <div>income: {this.state.monthlyIncome}</div>
+          <div>spend: {this.state.monthlySpend}</div>
+          <div>savings: {this.state.totalSavings}</div>
+          <input type='button' value='Back' onClick={this.previousSlide} />
           <br/>
-          <svg id='the-graph'></svg>
+          <svg id='the-graph' />
           <br/>
-          <div><pre>{JSON.stringify(graph_data, null, 2)}</pre></div>
+          <div><pre>{JSON.stringify(graphData, null, 2)}</pre></div>
         </div>
       )
     }

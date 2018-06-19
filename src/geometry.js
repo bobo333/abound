@@ -1,3 +1,6 @@
+const ONE_DAY = 1000*60*60*24;    // ms * seconds * minutes * hours
+
+
 /** Given two financial points, including their dates, monthly spend, and monthly passive income,
      this calculates the intersection of the lines of monthly spend and monthly passive income.
 
@@ -12,26 +15,26 @@
      has passive income below monthly spend, and the second point has passive income
      above monthly spend. This means that the intersection of these 2 points
      is the exact day where passive income surpasses monthly spend. */
-export function calculateIntersectionPoint(points_for_intersection) {
-    var before_point = points_for_intersection[0];
-    var after_point = points_for_intersection[1];
+export function calculateIntersectionPoint(pointsForIntersection) {
+    const beforePoint = pointsForIntersection[0];
+    const afterPoint = pointsForIntersection[1];
 
-    // calculate delta x (days_between) and the delta y's (change in spend and change in passive income)
-    var days_between = calculateDaysBetween(before_point.date, after_point.date);
-    var expense_slope = calculateSlope(before_point.spend, after_point.spend, days_between);
-    var withdraw_slope = calculateSlope(before_point.passive_income, after_point.passive_income, days_between);
+    // calculate delta x (daysBetween) and the delta y's (change in spend and change in passive income)
+    const daysBetween = calculateDaysBetween(beforePoint.date, afterPoint.date);
+    const expenseSlope = calculateSlope(beforePoint.spend, afterPoint.spend, daysBetween);
+    const withdrawSlope = calculateSlope(beforePoint.passiveIncome, afterPoint.passiveIncome, daysBetween);
 
     // put the lines in point-slope form to calculate intersection
-    var expense_line_data = formatLineData(days_between, after_point.spend, expense_slope);
-    var withdraw_line_data = formatLineData(days_between, after_point.passive_income, withdraw_slope);
+    const expenseLineData = formatLineData(daysBetween, afterPoint.spend, expenseSlope);
+    const withdrawLineData = formatLineData(daysBetween, afterPoint.passiveIncome, withdrawSlope);
     
-    var intersection_point = calculateIntersection(expense_line_data, withdraw_line_data);
+    const intersectionPoint = calculateIntersection(expenseLineData, withdrawLineData);
 
     // convert raw number of days back into a date, offset from the original date by the number of days
-    var intersection_date = getIntersectionDate(before_point.date, intersection_point.x);
+    const intersectionDate = getIntersectionDate(beforePoint.date, intersectionPoint.x);
 
     // return x and y value of intersection point
-    return formatPoint(intersection_date, intersection_point.y);
+    return formatPoint(intersectionDate, intersectionPoint.y);
 }
 
 
@@ -62,8 +65,8 @@ function calculateSlope(y1, y2, dx) {
 
 /** Calculates the x and y intersection, returning it as a point. */
 function calculateIntersection(line1, line2) {
-    var x = calculateXIntersection(line1, line2);
-    var y = calculateYIntersection(line1, line2);
+    const x = calculateXIntersection(line1, line2);
+    const y = calculateYIntersection(line1, line2);
 
     return formatPoint(x, y);
 };
@@ -83,25 +86,24 @@ function calculateYIntersection(line1, line2) {
 
 /** Given 2 dates, calculates the number of days between them. */
 function calculateDaysBetween(date1, date2) {
-    var one_day = 1000*60*60*24;    // ms * seconds * minutes * hours
-    var date1_ms = date1.getTime();
-    var date2_ms = date2.getTime();
+    const date1Ms = date1.getTime();
+    const date2Ms = date2.getTime();
 
-    var difference_ms = date2_ms - date1_ms;
+    const differenceMs = date2Ms - date1Ms;
 
-    return Math.round(difference_ms/one_day);
+    return Math.round(differenceMs / ONE_DAY);
 };
 
 
 /** Given a start date, and number of days to add, returns a new date
     after adding the number of days to the start date. */
-function getIntersectionDate(start_date, days_to_add) {
-    var intersection_date = new Date(start_date.getTime());
-    var days_to_add = Math.round(days_to_add);
+function getIntersectionDate(startDate, daysToAdd) {
+    const intersectionDate = new Date(startDate.getTime());
+    const roundedDaysToAdd = Math.round(daysToAdd);
 
     // Note: strangely getDate() returns the number of the day in the month.
-    intersection_date.setDate(intersection_date.getDate() + days_to_add);
+    intersectionDate.setDate(intersectionDate.getDate() + roundedDaysToAdd);
 
-    return intersection_date;
+    return intersectionDate;
 }
 
