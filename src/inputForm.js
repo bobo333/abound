@@ -4,7 +4,7 @@ export function InputForm(props) {
     return (
         <form onSubmit={props.onSubmit}>
           {props.name}
-          <div className='income-input'>
+          <div className='number-input'>
             <input type='text' placeholder={props.placeholder}
                    value={props.value} onChange={props.onChange} />
             <br/>
