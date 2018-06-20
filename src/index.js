@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import {calculateGraphData} from './independenceCalculations.js';
+import {InputForm} from './inputForm.js';
 
 
 class Calculator extends React.Component {
@@ -40,38 +41,20 @@ class Calculator extends React.Component {
   render() {
     if (this.state.currentSlide === 0){
       return(
-        <form onSubmit={(e) => this.nextSlide(e)}>
-          income
-          <div className='income-input'>
-            <input type='text' placeholder='$3500' value={this.state.monthlyIncome} onChange={(e) => this.updateIncome(e)} />
-            <br/>
-            <input type='submit' value='Next' />
-          </div>
-        </form>
+        <InputForm name='income' onSubmit={(e) => this.nextSlide(e)} placeholder='$3500'
+                   value={this.state.monthlyIncome} onChange={(e) => this.updateIncome(e)} />
       );
     } else if (this.state.currentSlide === 1) {
       return (
-        <form onSubmit={(e) => this.nextSlide(e)}>
-          expenses
-          <div className='spend-input'>
-            <input type='text' placeholder='$2500' value={this.state.monthlySpend} onChange={(e) => this.updateSpend(e)} />
-            <br/>
-            <input type='button' value='Back' onClick={(e) => this.previousSlide(e)} />
-            <input type='submit' value='Next' />
-          </div>
-        </form>
+        <InputForm name='expenses' onSubmit={(e) => this.nextSlide(e)} placeholder='$2500'
+                   value={this.state.monthlySpend} onChange={(e) => this.updateSpend(e)}
+                   backOnClick={(e) => this.previousSlide(e)} />
       );
     } else if (this.state.currentSlide === 2) {
       return (
-        <form onSubmit={(e) => this.nextSlide(e)}>
-          savings
-          <div className='savings-input'>
-            <input type='text' placeholder='$250000' value={this.state.totalSavings} onChange={(e) => this.updateSavings(e)} />
-            <br/>
-            <input type='button' value='Back' onClick={(e) => this.previousSlide(e)} />
-            <input type='submit' value='Next' />
-          </div>
-        </form>
+        <InputForm name='savings' onSubmit={(e) => this.nextSlide(e)} placeholder='$250000'
+                   value={this.state.totalSavings} onChange={(e) => this.updateSavings(e)}
+                   backOnClick={(e) => this.previousSlide(e)} />
       );
     } else {
       const graphData = calculateGraphData(this.state.monthlySpend, this.state.monthlyIncome, this.state.totalSavings);
