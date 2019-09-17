@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import {calculateGraphData} from './independenceCalculations.js';
 import {InputForm} from './inputForm.js';
+import Chart from './chart.js';
 
 
 class Calculator extends React.Component {
@@ -65,12 +66,10 @@ class Calculator extends React.Component {
           <div>spend: {this.state.monthlySpend}</div>
           <div>savings: {this.state.totalSavings}</div>
           <input type='button' value='Back' onClick={(e) => this.previousSlide(e)} />
-          <br/>
-          <svg id='the-graph' />
-          <br/>
+          <Chart data={graphData} />
           <div><pre>{JSON.stringify(graphData, null, 2)}</pre></div>
         </div>
-      )
+      );
     }
   }
 }

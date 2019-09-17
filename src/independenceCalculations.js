@@ -34,7 +34,7 @@ function calculateGraphPoints(spend, activeIncome, totalAssets) {
 
     let graphPoints = [];
     const passiveIncome = WITHDRAWAL_RATE * totalAssets;
-    let currentPoint = formatFinancialPoint(new Date(), spend, activeIncome, totalAssets, passiveIncome);
+    let currentPoint = formatFinancialPoint(new Date(), spend, activeIncome, totalAssets, passiveIncome, passiveIncome / 12, spend / 12);
     graphPoints.push(currentPoint);
 
     // keep adding points until passive income exceeds expenses, or max months is exceeded
@@ -76,22 +76,26 @@ function getNextGraphPoint(currentPoint, months, monthlyGrowthRate, monthlyInfla
     const nextMonthDate = new Date();
     nextMonthDate.setMonth(nextMonthDate.getMonth() + months);
     const newPassiveIncome = WITHDRAWAL_RATE * currentPoint.totalAssets;
+    const monthlyPassiveIncome = newPassiveIncome / 12;
     const newActiveIncome = isNewYear(months) ? addInterest(currentPoint.activeIncome, INCOME_INCREASE_RATE) : currentPoint.activeIncome;
     const newTotalAssets = addInterest(currentPoint.totalAssets, monthlyGrowthRate) + currentPoint.activeIncome - currentPoint.spend;
     const newSpend = addInterest(currentPoint.spend, monthlyInflationRate);
+    const monthlySpend = newSpend / 12;
 
-    return formatFinancialPoint(nextMonthDate, newSpend, newActiveIncome, newTotalAssets, newPassiveIncome);
+    return formatFinancialPoint(nextMonthDate, newSpend, newActiveIncome, newTotalAssets, newPassiveIncome, monthlyPassiveIncome, monthlySpend);
 }
 
 
 /** Formats a month's financial information in a consistent format. */
-function formatFinancialPoint(date, spend, activeIncome, totalAssets, passiveIncome) {
+function formatFinancialPoint(date, spend, activeIncome, totalAssets, passiveIncome, monthlyPassiveIncome, monthlySpend) {
     return {
         date,
         spend,
         activeIncome,
         totalAssets,
         passiveIncome,
+        monthlyPassiveIncome,
+        monthlySpend
     };
 }
 
