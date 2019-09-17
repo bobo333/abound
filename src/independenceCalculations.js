@@ -75,10 +75,10 @@ function calculateGraphPoints(spend, activeIncome, totalAssets) {
 function getNextGraphPoint(currentPoint, months, monthlyGrowthRate, monthlyInflationRate) {
     const nextMonthDate = new Date();
     nextMonthDate.setMonth(nextMonthDate.getMonth() + months);
-    const newPassiveIncome = WITHDRAWAL_RATE * currentPoint.totalAssets;
     const newActiveIncome = isNewYear(months) ? addInterest(currentPoint.activeIncome, INCOME_INCREASE_RATE) : currentPoint.activeIncome;
     const newSpend = addInterest(currentPoint.spend, monthlyInflationRate);
     const newTotalAssets = addInterest(currentPoint.totalAssets, monthlyGrowthRate) + currentPoint.activeIncome - currentPoint.spend;
+    const newPassiveIncome = WITHDRAWAL_RATE * newTotalAssets;
 
     return formatFinancialPoint(nextMonthDate, newSpend, newActiveIncome, newTotalAssets, newPassiveIncome);
 }
