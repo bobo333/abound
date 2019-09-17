@@ -58,7 +58,7 @@ class Calculator extends React.Component {
                    backOnClick={(e) => this.previousSlide(e)} />
       );
     } else {
-      const graphData = calculateGraphData(this.state.monthlySpend, this.state.monthlyIncome, this.state.totalSavings);
+      const graphData = calculateGraphData(parseFloat(this.state.monthlySpend), parseFloat(this.state.monthlyIncome), parseFloat(this.state.totalSavings));
 
       return (
         <div>
