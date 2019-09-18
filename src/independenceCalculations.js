@@ -11,6 +11,11 @@ const INCOME_INCREASE_RATE = 0.05;
 /** Top level function that gathers information necessary for
     plotting retirement trajectory. */
 export function calculateGraphData(spend, activeIncome, totalAssets) {
+    // default non-number values to 0
+    spend = spend || 0
+    activeIncome = activeIncome || 0
+    totalAssets = totalAssets || 0
+
     const graphData = calculateGraphPoints(spend, activeIncome, totalAssets);
 
     return {

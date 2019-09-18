@@ -6,6 +6,10 @@ class Chart extends Component {
         this.drawChart();
     }
 
+    componentDidUpdate() {
+        this.drawChart();
+    }
+
     drawChart() {
         console.log(this.props.data);
         const graphPoints = this.props.data.graphPoints;
@@ -147,6 +151,7 @@ class Chart extends Component {
     render() {
         return (
             <div>
+                <div><pre>{JSON.stringify(this.props.data.graphPoints[0], null, 2)}</pre></div>
                 <svg ref={(elem) => { this.svg = elem}}></svg>
             </div>
         )

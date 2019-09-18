@@ -62,9 +62,15 @@ class Calculator extends React.Component {
 
       return (
         <div>
-          <div>income: {this.state.monthlyIncome}</div>
-          <div>spend: {this.state.monthlySpend}</div>
-          <div>savings: {this.state.totalSavings}</div>
+          <div>income:
+            <input type='text' placeholder='$3500' value={this.state.monthlyIncome} onChange={(e) => this.updateIncome(e)} />
+          </div>
+          <div>spend:
+            <input type='text' placeholder='$2500' value={this.state.monthlySpend} onChange={(e) => this.updateSpend(e)} />
+          </div>
+          <div>savings:
+            <input type='text' placeholder='$250000' value={this.state.totalSavings} onChange={(e) => this.updateSavings(e)} />
+          </div>
           <input type='button' value='Back' onClick={(e) => this.previousSlide(e)} />
           <Chart data={graphData} />
           <div><pre>{JSON.stringify(graphData, null, 2)}</pre></div>
