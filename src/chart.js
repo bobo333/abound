@@ -101,6 +101,22 @@ class Chart extends Component {
             .style("stroke-width", 2)
             .style("stroke", "green")
             .style("fill", "none");
+
+        if (this.props.data.intersectionPoint !== null) {
+            chart.selectAll('circle')
+                .data([this.props.data.intersectionPoint])
+                .enter()
+                .append('circle')
+                .attr('cx', function(d) {
+                    return xScale(d.x);
+                })
+                .attr('cy', function(d) {
+                    return yScale(d.y);
+                })
+                .attr('r', 5)
+                .attr('class', 'intersection-point')
+                .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+        }
     }
 
     render() {
