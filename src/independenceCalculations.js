@@ -7,6 +7,9 @@ const MAX_MONTHS = MAX_YEARS * 12;
 const GROWTH_RATE = 0.075;
 const INCOME_INCREASE_RATE = 0.05;
 
+const MONTHLY_GROWTH_RATE = calculateInterestRateForPeriod(GROWTH_RATE, 12);
+const MONTHLY_INFLATION_RATE = calculateInterestRateForPeriod(INFLATION_RATE, 12);
+
 
 /** Top level function that gathers information necessary for
     plotting retirement trajectory. */
@@ -18,10 +21,16 @@ export function calculateGraphData(spend, activeIncome, totalAssets) {
 
     const graphData = calculateGraphPoints(spend, activeIncome, totalAssets);
 
+    let intersectionPoint = graphData.intersectionPoint;
+    if (graphData.canRetireNow) {
+        intersectionPoint = null;
+    }
+
     return {
         graphPoints: graphData.graphPoints,
+        onCourseToRetire: graphData.onCourseToRetire,
         canRetireNow: graphData.canRetireNow,
-        dateOfRetirement: graphData.canRetireNow ? graphData.intersectionPoint.x : null,
+        intersectionPoint
     };
 }
 
@@ -33,43 +42,42 @@ export function calculateGraphData(spend, activeIncome, totalAssets) {
     It handles adjusting based on inflation, interest, and pay
     adjustments. */
 function calculateGraphPoints(spend, activeIncome, totalAssets) {
-    const monthlyGrowthRate = calculateInterestRateForPeriod(GROWTH_RATE, 12);
-    const monthlyInflationRate = calculateInterestRateForPeriod(INFLATION_RATE, 12);
     let months = 0;
+    let canRetireNow = false;
 
     let graphPoints = [];
     const passiveIncome = WITHDRAWAL_RATE * totalAssets;
     let currentPoint = formatFinancialPoint(new Date(), spend, activeIncome, totalAssets, passiveIncome);
     graphPoints.push(currentPoint);
 
+    if (canRetire(currentPoint)) {
+        canRetireNow = true;
+        padPoints(graphPoints, currentPoint, months, 24);
+    }
+
     // keep adding points until passive income exceeds expenses, or max months is exceeded
     while (!canRetire(currentPoint) && months < MAX_MONTHS) {
         months++;
-        const nextGraphPoint = getNextGraphPoint(currentPoint, months, monthlyGrowthRate, monthlyInflationRate);
+        const nextGraphPoint = getNextGraphPoint(currentPoint, months);
         graphPoints.push(nextGraphPoint);
         currentPoint = nextGraphPoint;
     }
 
     // if can retire, add intersection point (store it as well) and pad graph
     let intersectionPoint = null;
-    let canRetireNow = canRetire(currentPoint);
-    if (canRetireNow) {
+    let onCourseToRetire = canRetire(currentPoint);
+    if (onCourseToRetire) {
         intersectionPoint = calculateIntersectionPoint(graphPoints.slice(-2));
-        console.log(intersectionPoint);
 
         // pad the graph by an extra 1/6 of its length
-        for (let i = 0; i < graphPoints.length / 6; i++) {
-            months++;
-            const nextGraphPoint = getNextGraphPoint(currentPoint, months, monthlyGrowthRate, monthlyInflationRate);
-            graphPoints.push(nextGraphPoint);
-            currentPoint = nextGraphPoint;
-        }
+        padPoints(graphPoints, currentPoint, months, graphPoints.length / 6);
     }
 
     return {
-        graphPoints, 
         intersectionPoint,
+        onCourseToRetire,
         canRetireNow,
+        graphPoints,
     };
 }
 
@@ -77,12 +85,12 @@ function calculateGraphPoints(spend, activeIncome, totalAssets) {
 /** Given the current financial information, it adjusts values appropriately
     based on interest, pay adjustment, and inflation. It returns
     the next month's financial information. */
-function getNextGraphPoint(currentPoint, months, monthlyGrowthRate, monthlyInflationRate) {
+function getNextGraphPoint(currentPoint, months) {
     const nextMonthDate = new Date();
     nextMonthDate.setMonth(nextMonthDate.getMonth() + months);
     const newActiveIncome = isNewYear(months) ? addInterest(currentPoint.activeIncome, INCOME_INCREASE_RATE) : currentPoint.activeIncome;
-    const newSpend = addInterest(currentPoint.spend, monthlyInflationRate);
-    const newTotalAssets = addInterest(currentPoint.totalAssets, monthlyGrowthRate) + currentPoint.activeIncome - currentPoint.spend;
+    const newSpend = addInterest(currentPoint.spend, MONTHLY_INFLATION_RATE);
+    const newTotalAssets = addInterest(currentPoint.totalAssets, MONTHLY_GROWTH_RATE) + currentPoint.activeIncome - currentPoint.spend;
     const newPassiveIncome = WITHDRAWAL_RATE * newTotalAssets;
 
     return formatFinancialPoint(nextMonthDate, newSpend, newActiveIncome, newTotalAssets, newPassiveIncome);
@@ -129,6 +137,17 @@ function isNewYear(months) {
 
 /** Determines if, given a specific financial situation, the person in question
     can retire. Specifically, if passive income exceeds expenses. */
-function canRetire(latestPoint) {
-    return latestPoint.passiveIncome >= latestPoint.spend;
+function canRetire(financialPoint) {
+    return financialPoint.passiveIncome >= financialPoint.spend;
+}
+
+
+function padPoints(graphPoints, currentPoint, months, paddingSize) {
+    // pad the graph by an extra 1/6 of its length
+    for (let i = 0; i < paddingSize; i++) {
+        months++;
+        const nextGraphPoint = getNextGraphPoint(currentPoint, months, MONTHLY_GROWTH_RATE, MONTHLY_INFLATION_RATE);
+        graphPoints.push(nextGraphPoint);
+        currentPoint = nextGraphPoint;
+    }
 }
