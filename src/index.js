@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import {calculateGraphData} from './independenceCalculations.js';
 import {InputForm} from './inputForm.js';
+import Chart from './chart.js';
 
 
 class Calculator extends React.Component {
@@ -57,20 +58,24 @@ class Calculator extends React.Component {
                    backOnClick={(e) => this.previousSlide(e)} />
       );
     } else {
-      const graphData = calculateGraphData(this.state.monthlySpend, this.state.monthlyIncome, this.state.totalSavings);
+      const graphData = calculateGraphData(parseFloat(this.state.monthlySpend), parseFloat(this.state.monthlyIncome), parseFloat(this.state.totalSavings));
 
       return (
         <div>
-          <div>income: {this.state.monthlyIncome}</div>
-          <div>spend: {this.state.monthlySpend}</div>
-          <div>savings: {this.state.totalSavings}</div>
+          <div>income:
+            <input type='text' placeholder='$3500' value={this.state.monthlyIncome} onChange={(e) => this.updateIncome(e)} />
+          </div>
+          <div>spend:
+            <input type='text' placeholder='$2500' value={this.state.monthlySpend} onChange={(e) => this.updateSpend(e)} />
+          </div>
+          <div>savings:
+            <input type='text' placeholder='$250000' value={this.state.totalSavings} onChange={(e) => this.updateSavings(e)} />
+          </div>
           <input type='button' value='Back' onClick={(e) => this.previousSlide(e)} />
-          <br/>
-          <svg id='the-graph' />
-          <br/>
+          <Chart data={graphData} />
           <div><pre>{JSON.stringify(graphData, null, 2)}</pre></div>
         </div>
-      )
+      );
     }
   }
 }
