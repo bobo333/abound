@@ -19,10 +19,10 @@ class Calculator extends React.Component {
       monthlySpend: '',
       totalSavings: '',
       currentSlide: 0,
-      withdrawalRate: 0.04,
-      inflationRate: 0.035,
-      growthRate: 0.075,
-      incomeRate: 0.05,
+      withdrawalRate: 4,
+      inflationRate: 3.5,
+      growthRate: 7.5,
+      incomeRate: 5,
     };
   }
 
@@ -37,10 +37,10 @@ class Calculator extends React.Component {
 
   getRates() {
     return {
-      withdrawal: sanitizeInput(this.state.withdrawalRate),
-      inflation: sanitizeInput(this.state.inflationRate),
-      growth: sanitizeInput(this.state.growthRate),
-      income: sanitizeInput(this.state.incomeRate),
+      withdrawal: sanitizeInput(this.state.withdrawalRate) / 100,
+      inflation: sanitizeInput(this.state.inflationRate) / 100,
+      growth: sanitizeInput(this.state.growthRate) / 100,
+      income: sanitizeInput(this.state.incomeRate) / 100,
     }
   }
 
