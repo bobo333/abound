@@ -33,7 +33,7 @@ function calculateGraphPoints(spend, activeIncome, totalAssets, rates) {
     let canRetireNow = false;
 
     let graphPoints = [];
-    const passiveIncome = rates.withdrawal * totalAssets;
+    const passiveIncome = rates.withdrawal * totalAssets / 12;
     let currentPoint = formatFinancialPoint(new Date(), spend, activeIncome, totalAssets, passiveIncome);
     graphPoints.push(currentPoint);
 
@@ -80,7 +80,7 @@ function getNextGraphPoint(currentPoint, months, rates) {
     const newSpend = addInterest(currentPoint.spend, monthlyInflationRate);
     const monthlyGrowthRate = calculateInterestRateForPeriod(rates.growth, 12);
     const newTotalAssets = addInterest(currentPoint.totalAssets, monthlyGrowthRate) + currentPoint.activeIncome - currentPoint.spend;
-    const newPassiveIncome = rates.withdrawal * newTotalAssets;
+    const newPassiveIncome = rates.withdrawal * newTotalAssets / 12;
 
     return formatFinancialPoint(nextMonthDate, newSpend, newActiveIncome, newTotalAssets, newPassiveIncome);
 }

@@ -86,16 +86,16 @@ class Calculator extends React.Component {
             <input type='text' placeholder='$250000' value={this.state.totalSavings} onChange={(e) => this.updateState(e, 'totalSavings')} />
           </div>
           <div>inflation (%):
-            <input type='text' placeholder='0.035' value={this.state.inflationRate} onChange={(e) => this.updateState(e, 'inflationRate')} />
+            <input type='text' placeholder='3.5' value={this.state.inflationRate} onChange={(e) => this.updateState(e, 'inflationRate')} />
           </div>
           <div>withdrawal rate (%):
-            <input type='text' placeholder='0.04' value={this.state.withdrawalRate} onChange={(e) => this.updateState(e, 'withdrawalRate')} />
+            <input type='text' placeholder='4' value={this.state.withdrawalRate} onChange={(e) => this.updateState(e, 'withdrawalRate')} />
           </div>
           <div>growth rate (%):
-            <input type='text' placeholder='0.075' value={this.state.growthRate} onChange={(e) => this.updateState(e, 'growthRate')} />
+            <input type='text' placeholder='7.5' value={this.state.growthRate} onChange={(e) => this.updateState(e, 'growthRate')} />
           </div>
           <div>income increase rate (%):
-            <input type='text' placeholder='0.05' value={this.state.incomeRate} onChange={(e) => this.updateState(e, 'incomeRate')} />
+            <input type='text' placeholder='5' value={this.state.incomeRate} onChange={(e) => this.updateState(e, 'incomeRate')} />
           </div>
           <input type='button' value='Back' onClick={(e) => this.previousSlide(e)} />
           <Chart data={graphData} />

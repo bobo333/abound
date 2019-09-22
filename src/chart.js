@@ -29,7 +29,7 @@ class Chart extends Component {
         endDate.setMonth(endDate.getMonth() + graphPoints.length);
 
         let maxValue = d3.max(graphPoints, function(d) { return Math.max(d.passiveIncome, d.spend); });
-        let minValue = d3.min(graphPoints, function(d) { return Math.min(d.passiveIncome, d.spend); });
+        let minValue = d3.min(graphPoints, function(d) { return Math.min(0, d.passiveIncome, d.spend); });
 
         let chart = d3.select(this.svg);
         chart.selectAll("*").remove();
