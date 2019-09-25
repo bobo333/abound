@@ -18,7 +18,7 @@ class Calculator extends React.Component {
       monthlyIncome: '',
       monthlySpend: '',
       totalSavings: '',
-      currentSlide: 3,
+      currentSlide: 0,
       withdrawalRate: 4,
       inflationRate: 3.5,
       growthRate: 7.5,
