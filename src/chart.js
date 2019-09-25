@@ -4,6 +4,7 @@ import * as d3 from "d3";
 class Chart extends Component {
     componentDidMount() {
         this.drawChart();
+        window.addEventListener("resize", this.drawChart.bind(this));
     }
 
     componentDidUpdate() {
@@ -12,13 +13,13 @@ class Chart extends Component {
 
     drawChart() {
         const graphPoints = this.props.data.graphPoints;
-        const containerWidth = 700;
+        const containerWidth = this.refs.self.parentNode.clientWidth;
 
         const aspectRatio = 16 / 9;
         const scrollBarWidth = 20;
         const pixelsPerAxisLabel = 75;
 
-        let margin = {top: 20, right: 10, bottom: 30, left: 75},
+        let margin = {top: 20, right: 10, bottom: 30, left: 20},
             width = containerWidth - margin.left - margin.right - scrollBarWidth,
             height = width / aspectRatio - margin.top - margin.bottom;
 
@@ -121,7 +122,7 @@ class Chart extends Component {
 
     render() {
         return (
-            <div>
+            <div ref="self">
                 <svg ref={(elem) => { this.svg = elem}}></svg>
             </div>
         )

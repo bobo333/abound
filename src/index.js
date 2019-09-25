@@ -18,7 +18,7 @@ class Calculator extends React.Component {
       monthlyIncome: '',
       monthlySpend: '',
       totalSavings: '',
-      currentSlide: 0,
+      currentSlide: 3,
       withdrawalRate: 4,
       inflationRate: 3.5,
       growthRate: 7.5,
@@ -75,30 +75,48 @@ class Calculator extends React.Component {
         this.getRates());
 
       return (
-        <div>
-          <div>income:
-            <input type='text' placeholder='$3500' value={this.state.monthlyIncome} onChange={(e) => this.updateState(e, 'monthlyIncome')} />
-          </div>
-          <div>spend:
-            <input type='text' placeholder='$2500' value={this.state.monthlySpend} onChange={(e) => this.updateState(e, 'monthlySpend')} />
-          </div>
-          <div>savings:
-            <input type='text' placeholder='$250000' value={this.state.totalSavings} onChange={(e) => this.updateState(e, 'totalSavings')} />
-          </div>
-          <div>inflation (%):
-            <input type='text' placeholder='3.5' value={this.state.inflationRate} onChange={(e) => this.updateState(e, 'inflationRate')} />
-          </div>
-          <div>withdrawal rate (%):
-            <input type='text' placeholder='4' value={this.state.withdrawalRate} onChange={(e) => this.updateState(e, 'withdrawalRate')} />
-          </div>
-          <div>growth rate (%):
-            <input type='text' placeholder='7.5' value={this.state.growthRate} onChange={(e) => this.updateState(e, 'growthRate')} />
-          </div>
-          <div>income increase rate (%):
-            <input type='text' placeholder='5' value={this.state.incomeRate} onChange={(e) => this.updateState(e, 'incomeRate')} />
-          </div>
-          <input type='button' value='Back' onClick={(e) => this.previousSlide(e)} />
+        <div class="container-fluid">
           <Chart data={graphData} />
+
+          <div class="row mt-5">
+            <div class="col-4 fin-input">
+              <input type='text' placeholder='$3500' value={this.state.monthlyIncome} onChange={(e) => this.updateState(e, 'monthlyIncome')} />
+              <br />
+              income ($)
+            </div>
+            <div class="col-4 fin-input">
+              <input type='text' placeholder='$2500' value={this.state.monthlySpend} onChange={(e) => this.updateState(e, 'monthlySpend')} />
+              <br />
+              spend ($)
+            </div>
+            <div class="col-4 fin-input">
+              <input type='text' placeholder='$250000' value={this.state.totalSavings} onChange={(e) => this.updateState(e, 'totalSavings')} />
+              <br />
+              savings ($)
+            </div>
+          </div>
+          <div class="row mt-5 mb-5" id="additional-variables" data-toggle="additional-variables">
+            <div class="col-3 fin-input">
+              <input type='text' placeholder='3.5' value={this.state.inflationRate} onChange={(e) => this.updateState(e, 'inflationRate')} />
+              <br />
+              inflation (%)
+            </div>
+            <div class="col-3 fin-input">
+              <input type='text' placeholder='4' value={this.state.withdrawalRate} onChange={(e) => this.updateState(e, 'withdrawalRate')} />
+              <br />
+              withdrawal rate (%)
+            </div>
+            <div class="col-3 fin-input">
+              <input type='text' placeholder='7.5' value={this.state.growthRate} onChange={(e) => this.updateState(e, 'growthRate')} />
+              <br />
+              growth rate (%)
+            </div>
+            <div class="col-3 fin-input">
+              <input type='text' placeholder='5' value={this.state.incomeRate} onChange={(e) => this.updateState(e, 'incomeRate')} />
+              <br />
+              income increase rate (%)
+            </div>
+          </div>
           <div><pre>{JSON.stringify(graphData, null, 2)}</pre></div>
         </div>
       );

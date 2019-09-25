@@ -53,7 +53,7 @@ function calculateGraphPoints(spend, activeIncome, totalAssets, rates) {
     // if can retire, add intersection point (store it as well) and pad graph
     let intersectionPoint = null;
     let onCourseToRetire = canRetire(currentPoint);
-    if (onCourseToRetire) {
+    if (onCourseToRetire && !canRetireNow) {
         intersectionPoint = calculateIntersectionPoint(graphPoints.slice(-2));
 
         // pad the graph by an extra 1/6 of its length
