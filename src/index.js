@@ -4,6 +4,7 @@ import './index.css';
 import {calculateGraphData} from './independenceCalculations.js';
 import {InputForm} from './inputForm.js';
 import Chart from './chart.js';
+import {Header} from './header.js';
 
 
 function sanitizeInput(input) {
@@ -76,6 +77,7 @@ class Calculator extends React.Component {
 
       return (
         <div class="container-fluid">
+        <Header />
           <Chart data={graphData} />
 
           <div class="row mt-5">
