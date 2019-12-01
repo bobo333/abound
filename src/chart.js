@@ -12,6 +12,8 @@ class Chart extends Component {
     }
 
     drawChart() {
+        // handle never going to retire
+        // can retire already
         const graphPoints = this.props.data.graphPoints;
         const containerWidth = this.refs.self.parentNode.clientWidth;
 

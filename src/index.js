@@ -98,20 +98,41 @@ class Calculator extends React.Component {
   render() {
     if (this.state.currentSlide === 0){
       return(
-        <InputForm name='income' onSubmit={(e) => this.nextSlide(e)} placeholder='$3500'
-                   value={this.state.monthlyIncome} onChange={(e) => this.updateState(e, 'monthlyIncome')} />
+        <div class="container-fluid">
+          <Header />
+          <div class="row">
+            <div class="col-4 offset-4 text-center">
+              <InputForm name='income' onSubmit={(e) => this.nextSlide(e)} placeholder='$3500'
+                value={this.state.monthlyIncome} onChange={(e) => this.updateState(e, 'monthlyIncome')} />
+            </div>
+          </div>
+        </div>
       );
     } else if (this.state.currentSlide === 1) {
       return (
-        <InputForm name='expenses' onSubmit={(e) => this.nextSlide(e)} placeholder='$2500'
-                   value={this.state.monthlySpend} onChange={(e) => this.updateState(e, 'monthlySpend')}
-                   backOnClick={(e) => this.previousSlide(e)} />
+        <div class="container-fluid">
+          <Header />
+          <div class="row">
+            <div class="col-4 offset-4 text-center">
+              <InputForm name='expenses' onSubmit={(e) => this.nextSlide(e)} placeholder='$2500'
+                value={this.state.monthlySpend} onChange={(e) => this.updateState(e, 'monthlySpend')}
+                backOnClick={(e) => this.previousSlide(e)} />
+            </div>
+          </div>
+        </div>
       );
     } else if (this.state.currentSlide === 2) {
       return (
-        <InputForm name='savings' onSubmit={(e) => this.nextSlide(e)} placeholder='$250000'
-                   value={this.state.totalSavings} onChange={(e) => this.updateState(e, 'totalSavings')}
-                   backOnClick={(e) => this.previousSlide(e)} />
+        <div class="container-fluid">
+          <Header />
+          <div class="row">
+            <div class="col-4 offset-4 text-center">
+              <InputForm name='savings' onSubmit={(e) => this.nextSlide(e)} placeholder='$250000'
+                value={this.state.totalSavings} onChange={(e) => this.updateState(e, 'totalSavings')}
+                backOnClick={(e) => this.previousSlide(e)} />
+            </div>
+          </div>
+        </div>
       );
     } else {
       const graphData = calculateGraphData(
@@ -119,9 +140,6 @@ class Calculator extends React.Component {
         sanitizeInput(this.state.monthlyIncome),
         sanitizeInput(this.state.totalSavings),
         this.getRates());
-
-      // handle never going to retire
-      // can retire already
 
       return (
         <div class="container-fluid">
