@@ -48,7 +48,7 @@ class Chart extends Component {
             .range([height, 0]);
 
         let xAxis = d3.axisBottom(xScale)
-            .tickFormat(multiFormat)
+            .tickFormat(formatDate)
             .ticks(numberOfXTicks);
 
         let yAxis = d3.axisLeft(yScale)
@@ -64,7 +64,7 @@ class Chart extends Component {
             .attr("text-anchor", "end")
             .attr("x", width)
             .attr("y", height - 3)
-            .text("Years from now");
+            .text("Date");
 
         chart.append("g")
             .attr("class", "axis y-axis")
@@ -138,14 +138,14 @@ const formatMillisecond = d3.timeFormat(".%L"),
       formatMonth = d3.timeFormat("%B"),
       formatYear = d3.timeFormat("%Y");
 
-function multiFormat(date) {
-    return (d3.timeSecond(date) < date ? formatMillisecond
-        : d3.timeMinute(date) < date ? formatSecond
-        : d3.timeHour(date) < date ? formatMinute
-        : d3.timeDay(date) < date ? formatHour
-        : d3.timeMonth(date) < date ? (d3.timeWeek(date) < date ? formatDay : formatWeek)
-        : d3.timeYear(date) < date ? formatMonth
-        : formatYear)(date);
+function formatDate(tickDate) {
+    return (d3.timeSecond(tickDate) < tickDate ? formatMillisecond
+        : d3.timeMinute(tickDate) < tickDate ? formatSecond
+        : d3.timeHour(tickDate) < tickDate ? formatMinute
+        : d3.timeDay(tickDate) < tickDate ? formatHour
+        : d3.timeMonth(tickDate) < tickDate ? (d3.timeWeek(tickDate) < tickDate ? formatDay : formatWeek)
+        : d3.timeYear(tickDate) < tickDate ? formatMonth
+        : formatYear)(tickDate);
 }
 
 function numberWithCommas(x) {

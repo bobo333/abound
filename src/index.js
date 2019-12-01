@@ -6,9 +6,54 @@ import {InputForm} from './inputForm.js';
 import Chart from './chart.js';
 import {Header} from './header.js';
 
-
 function sanitizeInput(input) {
   return parseFloat(input) || 0;
+}
+
+function getDateDiff(inDate) {
+  let now = new Date();
+
+  let years = inDate.getFullYear() - now.getFullYear();
+  let months = inDate.getMonth() - now.getMonth();
+  let days = inDate.getDate() - now.getDate();
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  if (days < 0) {
+    months--;
+    days += 30;
+  }
+
+  let pieces = [];
+
+  if (years === 1) {
+    pieces.push(years + " year");
+  } if (years > 1) {
+    pieces.push(years + " years");
+  } if (months === 1) {
+    pieces.push(months + " month");
+  } if (months > 1) {
+    pieces.push(months + " months");
+  } if (days === 1) {
+    pieces.push(days + " day");
+  } if (days > 1) {
+    pieces.push(days + " days");
+  }
+
+  console.log(pieces);
+
+  if (pieces.length > 1) {
+    pieces.splice(pieces.length - 1, 0, " and ");
+  }
+
+  console.log(pieces);
+
+  // either fix the comma after the 'and' and/or don't display full data all the time
+
+  return pieces.join(", ")
 }
 
 
@@ -75,9 +120,15 @@ class Calculator extends React.Component {
         sanitizeInput(this.state.totalSavings),
         this.getRates());
 
+      // handle never going to retire
+      // can retire already
+
       return (
         <div class="container-fluid">
         <Header />
+          <div class="row mt-5">
+            On course for financial independence in: {getDateDiff(graphData.intersectionPoint.x)}
+          </div>
           <Chart data={graphData} />
 
           <div class="row mt-5">
