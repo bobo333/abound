@@ -144,8 +144,10 @@ class Calculator extends React.Component {
       return (
         <div class="container-fluid">
         <Header />
-          <div class="row mt-5">
-            On course for financial independence in: {getDateDiff(graphData.intersectionPoint.x)}
+          <div class="row">
+            <div class="col-8 offset-2 text-center">
+              On course for financial independence in: {getDateDiff(graphData.intersectionPoint.x)}
+            </div>
           </div>
           <Chart data={graphData} />
 

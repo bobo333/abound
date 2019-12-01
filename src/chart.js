@@ -21,7 +21,7 @@ class Chart extends Component {
         const scrollBarWidth = 20;
         const pixelsPerAxisLabel = 75;
 
-        let margin = {top: 20, right: 10, bottom: 30, left: 20},
+        let margin = {top: 20, right: 40, bottom: 30, left: 40},
             width = containerWidth - margin.left - margin.right - scrollBarWidth,
             height = width / aspectRatio - margin.top - margin.bottom;
 
